@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Отчёт после пробного урока</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #f8c8dc;
+      --peach: #ffd8b5;
+      --mint: #c9f4e6;
+      --bg: #fffaf8;
+      --text: #5e4242;
+      --radius: 26px;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --error: #ff6b6b;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px;
+      background: var(--bg);
+      font-family: "Nunito", sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      border-radius: 40px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .header {
+      background: linear-gradient(120deg,#f8c8dc,#c9f4e6);
+      padding: 28px;
+      border-radius: 32px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-weight: 800;
+      font-size: 2rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .info-card {
+      background: var(--peach);
+      border-radius: 40px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-label { font-weight: 700; }
+
+    .info-input {
+      border: none;
+      background: transparent;
+      padding: 6px 0;
+      width: 100%;
+      font-size: 1rem;
+      display: block;           /* ← ВАЖНО! для анимации shake */
+      will-change: transform;   /* ← ускоряет */
+    }
+
+    .input-error {
+      border-bottom: 2px solid var(--error) !important;
+      background: #ffecec !important;
+    }
+
+    .error-text {
+      font-size: .75rem;
+      color: var(--error);
+      display: none;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 16px;
+      border: none;
+      border-radius: var(--radius);
+      background: #fff6f2;
+      box-shadow: var(--shadow);
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .dynamic-list { display: flex; flex-direction: column; gap: 8px; }
+    .list-item { display: flex; gap: 8px; align-items: center; }
+    .bullet { width: 8px; height: 8px; border-radius: 50%; background: #ffb7b7; }
+
+    .list-input {
+      flex: 1;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: #fff6f2;
+      box-shadow: var(--shadow);
+    }
+
+    .remove-btn {
+      border: none;
+      background: #ffe0e0;
+      border-radius: 999px;
+      padding: 6px 9px;
+      cursor: pointer;
+    }
+
+    .add-item-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: var(--mint);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 24px;
+      background: #ffb7b7;
+      box-shadow: var(--shadow);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg,#ffe2eb,#e5fff7);
+      padding: 16px 20px;
+      border-radius: 22px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      border-left: 5px solid #ff8aa1;
+      color: #a7527a;
+      line-height: 1.45;
+      margin-bottom: 14px;
+      font-size: 1rem;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page" id="report">
+
+    <div class="header">
+      <h1>Отчёт после пробного урока</h1>
+      <p>Индивидуальный разбор ученика</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <span class="info-label">Имя ученика *</span>
+        <input class="info-input required-field" id="studentName" type="text">
+        <div class="error-text">Это поле обязательно</div>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Имя педагога *</span>
+        <input class="info-input required-field" id="teacherName" type="text">
+        <div class="error-text">Это поле обязательно</div>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Дата занятия *</span>
+        <input class="info-input required-field" id="lessonDate" type="text">
+        <div class="error-text">Это поле обязательно</div>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Класс *</span>
+        <input class="info-input required-field" id="grade" type="text">
+        <div class="error-text">Это поле обязательно</div>
+      </div>
+    </div>
+
+    <section><h2>💬 Общее впечатление</h2><textarea></textarea></section>
+    <section><h2>✨ Сильные стороны</h2><div class="dynamic-list" id="strengths-list"></div><button class="add-item-btn" data-target="strengths-list">＋ Добавить пункт</button></section>
+    <section><h2>📌 Зоны роста</h2><div class="dynamic-list" id="growth-list"></div><button class="add-item-btn" data-target="growth-list">＋ Добавить пункт</button></section>
+    <section><h2>📚 Пробелы по темам</h2><div class="dynamic-list" id="gaps-list"></div><button class="add-item-btn" data-target="gaps-list">＋ Добавить тему</button></section>
+
+    <section>
+      <h2>✔ Рекомендации</h2>
+      <div class="two-cols">
+        <div><label>Ученику</label><textarea></textarea></div>
+        <div><label>Родителям</label><textarea></textarea></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🗓 План на месяц</h2>
+      <div class="weeks-wrap">
+        <div class="week-box"><span class="week-title">Неделя 1</span><textarea></textarea></div>
+        <div class="week-box"><span class="week-title">Неделя 2</span><textarea></textarea></div>
+        <div class="week-box"><span class="week-title">Неделя 3</span><textarea></textarea></div>
+        <div class="week-box"><span class="week-title">Неделя 4</span><textarea></textarea></div>
+      </div>
+    </section>
+
+    <section><h2>💗 Итоговый вывод</h2><textarea></textarea></section>
+  </div>
+
+  <div class="actions">
+    <div class="warning-box">
+      <strong style="font-size:1.1rem; display:block; margin-bottom:6px;">Обратите внимание! ⚠️</strong>
+      При незаполнении какого-либо поля — оно попадёт на картинку пустым. Если писать нечего — ставьте прочерк.
+    </div>
+
+    <button class="primary-btn" id="download-btn">📸 Скачать как картинку</button>
+    <a class="primary-btn" href="https://t.me/lera_easy_math" target="_blank">✨ Подписаться на канал</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+
+    document.addEventListener("click",(e)=>{
+      if(e.target.closest(".add-item-btn")){
+        const container=document.getElementById(e.target.closest(".add-item-btn").dataset.target);
+        const wrap=document.createElement("div");
+        wrap.className="list-item";
+        wrap.innerHTML=`<div class='bullet'></div><input class='list-input' type='text'><button class='remove-btn'>×</button>`;
+        container.appendChild(wrap);
+      }
+      if(e.target.closest(".remove-btn")){
+        e.target.closest(".list-item").remove();
+      }
+    });
+
+    function validateRequired(){
+      let ok=true;
+      let firstInvalid=null;
+
+      document.querySelectorAll('.required-field').forEach(inp=>{
+        const err=inp.parentNode.querySelector('.error-text');
+        inp.classList.remove('input-error','shake');
+        err.style.display='none';
+
+        if(!inp.value.trim()){
+          ok=false;
+          inp.classList.add('input-error','shake');
+          err.style.display='block';
+          if(!firstInvalid) firstInvalid=inp;
+
+          setTimeout(()=>inp.classList.remove('shake'),600);
+        }
+      });
+
+      if(firstInvalid){
+        firstInvalid.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+
+      return ok;
+    }
+
+    document.getElementById('download-btn').onclick=async()=>{
+      if(!validateRequired()) return;
+
+      const page=document.getElementById('report');
+      const textareas=[...page.querySelectorAll('textarea')];
+      const reps=[];
+
+      textareas.forEach(t=>{
+        const d=document.createElement('div');
+        const s=getComputedStyle(t);
+
+        d.style.whiteSpace="pre-wrap";
+        d.style.padding=s.padding;
+        d.style.borderRadius=s.borderRadius;
+        d.style.background=s.backgroundColor;
+        d.style.boxShadow=s.boxShadow;
+        d.style.font=s.font;
+        d.style.color=s.color;
+        d.style.minHeight=s.minHeight;
+        d.style.width=s.width;
+
+        d.textContent=t.value.trim()?t.value:t.placeholder;
+
+        t.style.display='none';
+        t.after(d);
+
+        reps.push({t,d});
+      });
+
+      const canvas=await html2canvas(page,{scale:2});
+
+      reps.forEach(pair=>{
+        pair.d.remove();
+        pair.t.style.display='';
+      });
+
+      const a=document.createElement('a');
+      a.download='report.png';
+      a.href=canvas.toDataURL("image/png");
+      a.click();
+    };
+  </script>
+
+</body>
+</html>
