@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Отчёт после пробного урока</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --pink: #f8c8dc;
@@ -54,10 +56,32 @@
       font-size: 2rem;
     }
 
+    /* --- GRID ДЛЯ ДАННЫХ УЧЕНИКА --- */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-card {
+        padding: 12px 14px !important;
+        border-radius: 28px !important;
+      }
+
+      .page {
+        padding: 20px 16px !important;
+      }
     }
 
     .info-card {
@@ -75,8 +99,8 @@
       padding: 6px 0;
       width: 100%;
       font-size: 1rem;
-      display: block;           /* ← ВАЖНО! для анимации shake */
-      will-change: transform;   /* ← ускоряет */
+      display: block;
+      will-change: transform;
     }
 
     .input-error {
@@ -100,6 +124,7 @@
       box-shadow: var(--shadow);
       resize: vertical;
       font-family: inherit;
+      line-height: 1.45;
     }
 
     .dynamic-list { display: flex; flex-direction: column; gap: 8px; }
@@ -161,43 +186,8 @@
       margin-bottom: 14px;
       font-size: 1rem;
     }
-/* ПК — 4 колонки */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
 
-/* Планшеты: 2 колонки */
-@media (max-width: 900px) {
-  .info-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Телефоны: 1 колонка */
-@media (max-width: 600px) {
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-}
-@media (max-width: 600px) {
-  .info-card {
-    padding: 12px 14px;
-    border-radius: 28px;
-  }
-
-  .header {
-    padding: 20px;
-  }
-
-  .page {
-    padding: 20px 16px;
-  }
-}
-
-    
-
+    /* --- ТРЯСКА --- */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-6px); }
@@ -213,7 +203,6 @@
 </head>
 
 <body>
-
   <div class="page" id="report">
 
     <div class="header">
@@ -227,16 +216,19 @@
         <input class="info-input required-field" id="studentName" type="text">
         <div class="error-text">Это поле обязательно</div>
       </div>
+
       <div class="info-card">
         <span class="info-label">Имя педагога *</span>
         <input class="info-input required-field" id="teacherName" type="text">
         <div class="error-text">Это поле обязательно</div>
       </div>
+
       <div class="info-card">
         <span class="info-label">Дата занятия *</span>
         <input class="info-input required-field" id="lessonDate" type="text">
         <div class="error-text">Это поле обязательно</div>
       </div>
+
       <div class="info-card">
         <span class="info-label">Класс *</span>
         <input class="info-input required-field" id="grade" type="text">
@@ -244,126 +236,199 @@
       </div>
     </div>
 
-    <section><h2>💬 Общее впечатление</h2><textarea></textarea></section>
-    <section><h2>✨ Сильные стороны</h2><div class="dynamic-list" id="strengths-list"></div><button class="add-item-btn" data-target="strengths-list">＋ Добавить пункт</button></section>
-    <section><h2>📌 Зоны роста</h2><div class="dynamic-list" id="growth-list"></div><button class="add-item-btn" data-target="growth-list">＋ Добавить пункт</button></section>
-    <section><h2>📚 Пробелы по темам</h2><div class="dynamic-list" id="gaps-list"></div><button class="add-item-btn" data-target="gaps-list">＋ Добавить тему</button></section>
+    <section>
+      <h2>💬 Общее впечатление</h2>
+      <textarea placeholder="Как прошёл урок, что заметили, поведение, включённость..."></textarea>
+    </section>
+
+    <section>
+      <h2>✨ Сильные стороны</h2>
+      <div class="dynamic-list" id="strengths-list"></div>
+      <button class="add-item-btn" data-target="strengths-list">＋ Добавить пункт</button>
+    </section>
+
+    <section>
+      <h2>📌 Зоны роста</h2>
+      <div class="dynamic-list" id="growth-list"></div>
+      <button class="add-item-btn" data-target="growth-list">＋ Добавить пункт</button>
+    </section>
+
+    <section>
+      <h2>📚 Пробелы по темам</h2>
+      <div class="dynamic-list" id="gaps-list"></div>
+      <button class="add-item-btn" data-target="gaps-list">＋ Добавить тему</button>
+    </section>
 
     <section>
       <h2>✔ Рекомендации</h2>
       <div class="two-cols">
-        <div><label>Ученику</label><textarea></textarea></div>
-        <div><label>Родителям</label><textarea></textarea></div>
+        <div>
+          <label>Ученику</label>
+          <textarea placeholder="Например: делать фото-конспект, задавать вопросы, повторять формулы..."></textarea>
+        </div>
+        <div>
+          <label>Родителям</label>
+          <textarea placeholder="Например: поддерживать режим, не ругать за ошибки, отмечать прогресс..."></textarea>
+        </div>
       </div>
     </section>
 
     <section>
       <h2>🗓 План на месяц</h2>
       <div class="weeks-wrap">
-        <div class="week-box"><span class="week-title">Неделя 1</span><textarea></textarea></div>
-        <div class="week-box"><span class="week-title">Неделя 2</span><textarea></textarea></div>
-        <div class="week-box"><span class="week-title">Неделя 3</span><textarea></textarea></div>
-        <div class="week-box"><span class="week-title">Неделя 4</span><textarea></textarea></div>
+        <div class="week-box">
+          <span class="week-title">Неделя 1</span>
+          <textarea placeholder="Диагностика и стартовое выравнивание."></textarea>
+        </div>
+
+        <div class="week-box">
+          <span class="week-title">Неделя 2</span>
+          <textarea placeholder="Углубление ключевых тем."></textarea>
+        </div>
+
+        <div class="week-box">
+          <span class="week-title">Неделя 3</span>
+          <textarea placeholder="Закрепление и тренировка скорости."></textarea>
+        </div>
+
+        <div class="week-box">
+          <span class="week-title">Неделя 4</span>
+          <textarea placeholder="Повтор, контроль, корректировка плана."></textarea>
+        </div>
       </div>
     </section>
 
-    <section><h2>💗 Итоговый вывод</h2><textarea></textarea></section>
+    <section>
+      <h2>💗 Итоговый вывод</h2>
+      <textarea placeholder="Общее резюме по ученику — перспективы, сильные стороны и фокус в работе."></textarea>
+    </section>
+
   </div>
+
 
   <div class="actions">
     <div class="warning-box">
       <strong style="font-size:1.1rem; display:block; margin-bottom:6px;">Обратите внимание! ⚠️</strong>
-      При незаполнении какого-либо поля — оно попадёт на картинку пустым. Если писать нечего — ставьте прочерк.
+      При незаполнении какого-либо поля — оно попадёт на картинку пустым.  
+      Если писать нечего — ставьте прочерк для аккуратности.
     </div>
 
     <button class="primary-btn" id="download-btn">📸 Скачать как картинку</button>
-    <a class="primary-btn" href="https://t.me/lera_easy_math" target="_blank">✨ Подписаться на канал</a>
+
+    <a class="primary-btn" href="https://t.me/lera_easy_math" target="_blank">
+      ✨ Подписаться на канал @lera_easy_math
+    </a>
   </div>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script>
+  /* --- Добавление пунктов в списки --- */
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".add-item-btn")) {
+      const container = document.getElementById(e.target.closest(".add-item-btn").dataset.target);
+      const wrap = document.createElement("div");
+      wrap.className = "list-item";
+      wrap.innerHTML = `
+        <div class='bullet'></div>
+        <input class='list-input' type='text'>
+        <button class='remove-btn'>×</button>
+      `;
+      container.appendChild(wrap);
+    }
 
-    document.addEventListener("click",(e)=>{
-      if(e.target.closest(".add-item-btn")){
-        const container=document.getElementById(e.target.closest(".add-item-btn").dataset.target);
-        const wrap=document.createElement("div");
-        wrap.className="list-item";
-        wrap.innerHTML=`<div class='bullet'></div><input class='list-input' type='text'><button class='remove-btn'>×</button>`;
-        container.appendChild(wrap);
-      }
-      if(e.target.closest(".remove-btn")){
-        e.target.closest(".list-item").remove();
+    if (e.target.closest(".remove-btn")) {
+      e.target.closest(".list-item").remove();
+    }
+  });
+
+  /* --- Валидация обязательных полей --- */
+  function validateRequired() {
+    let ok = true;
+    let firstInvalid = null;
+
+    document.querySelectorAll(".required-field").forEach(inp => {
+      const err = inp.parentNode.querySelector(".error-text");
+
+      inp.classList.remove("input-error", "shake");
+      err.style.display = "none";
+
+      if (!inp.value.trim()) {
+        ok = false;
+
+        inp.classList.add("input-error", "shake");
+        err.style.display = "block";
+
+        if (!firstInvalid) firstInvalid = inp;
+
+        setTimeout(() => inp.classList.remove("shake"), 600);
       }
     });
 
-    function validateRequired(){
-      let ok=true;
-      let firstInvalid=null;
-
-      document.querySelectorAll('.required-field').forEach(inp=>{
-        const err=inp.parentNode.querySelector('.error-text');
-        inp.classList.remove('input-error','shake');
-        err.style.display='none';
-
-        if(!inp.value.trim()){
-          ok=false;
-          inp.classList.add('input-error','shake');
-          err.style.display='block';
-          if(!firstInvalid) firstInvalid=inp;
-
-          setTimeout(()=>inp.classList.remove('shake'),600);
-        }
-      });
-
-      if(firstInvalid){
-        firstInvalid.scrollIntoView({behavior:'smooth',block:'center'});
-      }
-
-      return ok;
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
-    document.getElementById('download-btn').onclick=async()=>{
-      if(!validateRequired()) return;
+    return ok;
+  }
 
-      const page=document.getElementById('report');
-      const textareas=[...page.querySelectorAll('textarea')];
-      const reps=[];
 
-      textareas.forEach(t=>{
-        const d=document.createElement('div');
-        const s=getComputedStyle(t);
+  /* --- Скачивание картинки (textarea → div фиксация ширины) --- */
+  document.getElementById("download-btn").onclick = async () => {
+    if (!validateRequired()) return;
 
-        d.style.whiteSpace="pre-wrap";
-        d.style.padding=s.padding;
-        d.style.borderRadius=s.borderRadius;
-        d.style.background=s.backgroundColor;
-        d.style.boxShadow=s.boxShadow;
-        d.style.font=s.font;
-        d.style.color=s.color;
-        d.style.minHeight=s.minHeight;
-        d.style.width=s.width;
+    const page = document.getElementById("report");
+    const textareas = [...page.querySelectorAll("textarea")];
+    const replicas = [];
 
-        d.textContent=t.value.trim()?t.value:t.placeholder;
+    textareas.forEach(t => {
+      const d = document.createElement("div");
+      const css = getComputedStyle(t);
+      const rect = t.getBoundingClientRect();   // ← реальная ширина textarea
 
-        t.style.display='none';
-        t.after(d);
+      // перенос строк
+      d.style.whiteSpace = "pre-wrap";
+      d.style.wordWrap = "break-word";
+      d.style.overflowWrap = "break-word";
 
-        reps.push({t,d});
-      });
+      // размеры
+      d.style.width = rect.width + "px";
+      d.style.minHeight = css.minHeight;
 
-      const canvas=await html2canvas(page,{scale:2});
+      // копируем визуальные стили
+      d.style.padding = css.padding;
+      d.style.borderRadius = css.borderRadius;
+      d.style.background = css.backgroundColor;
+      d.style.boxShadow = css.boxShadow;
+      d.style.font = css.font;
+      d.style.color = css.color;
+      d.style.lineHeight = css.lineHeight;
 
-      reps.forEach(pair=>{
-        pair.d.remove();
-        pair.t.style.display='';
-      });
+      // текст
+      d.textContent = t.value.trim() ? t.value : t.placeholder;
 
-      const a=document.createElement('a');
-      a.download='report.png';
-      a.href=canvas.toDataURL("image/png");
-      a.click();
-    };
-  </script>
+      // замена
+      t.style.display = "none";
+      t.after(d);
 
+      replicas.push({ t, d });
+    });
+
+    // рендер
+    const canvas = await html2canvas(page, { scale: 2 });
+
+    // вернуть textarea назад
+    replicas.forEach(pair => {
+      pair.d.remove();
+      pair.t.style.display = "";
+    });
+
+    // скачать
+    const link = document.createElement("a");
+    link.download = "report.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
+</script>
 </body>
 </html>
